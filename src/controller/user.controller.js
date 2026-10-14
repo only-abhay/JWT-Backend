@@ -12,6 +12,13 @@ import {
 } from "../utils/response.js";
 import { generateToken } from "../utils/helper.js";
 
+const getAuthCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  path: "/",
+});
+
 const SignUp = async (req, res) => {
   try {
     const cryptr = new Cryptr(process.env.CRYPTR_SECRET);
@@ -133,10 +140,8 @@ const Login = async (req, res) => {
     const token = generateToken(account, account.role);
 
     res.cookie("jwt", token, {
+      ...getAuthCookieOptions(),
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
     });
 
     return Created(res, "Login successful", {
@@ -179,10 +184,8 @@ const adminLogin = async (req, res) => {
     const token = generateToken(user);
 
     res.cookie("jwt", token, {
+      ...getAuthCookieOptions(),
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
     });
 
     return Created(res, "Admin Login successful");
@@ -241,11 +244,7 @@ const GetProfile = async (req, res) => {
 
 const Logout = async (req, res) => {
   try {
-    res.clearCookie("jwt", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
+    res.clearCookie("jwt", getAuthCookieOptions());
 
     return res.status(200).json({
       success: true,
@@ -284,11 +283,7 @@ const GetCurrentUser = async (req, res) => {
 
 const userLogout = async (req, res) => {
   try {
-    res.clearCookie("jwt", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
+    res.clearCookie("jwt", getAuthCookieOptions());
 
     return res.status(200).json({
       success: true,

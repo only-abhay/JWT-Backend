@@ -27,7 +27,7 @@ export async function SendOtpMail(normalizedEmail, otp) {
         },
         to: [{ email: normalizedEmail }],
            subject: "JWT Auth - Verify Your Email",
-        textContent: `Your JWT Auth verification code is ${otp}. It expires in 3 minutes. If you did not create an account, you can ignore this email.`,
+        textContent: `Your JWT Auth verification code is ${otp}. It expires in 10 minutes. If you did not create an account, you can ignore this email.`,
         htmlContent: `
           <!doctype html>
           <html lang="en">
@@ -69,7 +69,7 @@ export async function SendOtpMail(normalizedEmail, otp) {
                       </tr>
                       <tr>
                         <td align="center" style="padding:12px 32px 28px;">
-                          <p style="margin:0;color:#6b7280;font-size:14px;line-height:22px;">This code expires in <strong style="color:#374151;">3 minutes</strong>.</p>
+                          <p style="margin:0;color:#6b7280;font-size:14px;line-height:22px;">This code expires in <strong style="color:#374151;">10 minutes</strong>.</p>
                           <p style="margin:12px 0 0;color:#9ca3af;font-size:13px;line-height:20px;">If you didn't request an account, you can safely ignore this email.</p>
                         </td>
                       </tr>
